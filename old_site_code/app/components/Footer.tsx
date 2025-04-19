@@ -16,7 +16,7 @@ const PRIVACY_POLICY = `
 <h2>Privacy Policy</h2>
 <p>Last updated: March 2025</p>
 
-<p>NovaBox Digital ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how your information is collected, used, and disclosed by NovaBox Digital.</p>
+<p>Novabox LLC ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how your information is collected, used, and disclosed by Novabox LLC.</p>
 
 <h3>Information We Collect</h3>
 <p>We collect information that you provide directly to us, including when you:</p>
@@ -43,16 +43,16 @@ const TERMS_OF_SERVICE = `
 <h2>Terms of Service</h2>
 <p>Last updated: March 2025</p>
 
-<p>By accessing and using NovaBox Digital services, you agree to these terms.</p>
+<p>By accessing and using Novabox LLC services, you agree to these terms.</p>
 
 <h3>Use of Services</h3>
 <p>You agree to use our services only for lawful purposes and in accordance with these Terms.</p>
 
 <h3>Intellectual Property</h3>
-<p>All content, designs, and intellectual property on this site belong to NovaBox Digital.</p>
+<p>All content, designs, and intellectual property on this site belong to Novabox LLC.</p>
 
 <h3>Limitation of Liability</h3>
-<p>NovaBox Digital shall not be liable for any indirect, incidental, special, consequential, or punitive damages.</p>
+<p>Novabox LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages.</p>
 `;
 
 const footerStyles = {
@@ -138,7 +138,7 @@ export function Footer({
         <div style={footerStyles.inner}>
           <motion.img
             src="/logo.png"
-            alt={siteInfo?.title || "NovaBox Digital"}
+            alt={siteInfo?.title || "Novabox LLC"}
             style={footerStyles.logo}
             whileHover={{ scale: 1.02 }}
             transition={animations.transitions.quick}
@@ -150,7 +150,7 @@ export function Footer({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              NovaBox Digital
+              Novabox LLC
               <br />
               All rights reserved © {new Date().getFullYear()}
             </motion.p>

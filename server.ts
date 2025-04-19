@@ -86,7 +86,7 @@ async function startServer() {
         <!DOCTYPE html>
         <html>
           <head>
-            <title>NovaBox Digital</title>
+            <title>Novabox LLC</title>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <script type="module" src="/src/entry.client.tsx"></script>

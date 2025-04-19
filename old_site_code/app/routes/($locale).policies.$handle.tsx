@@ -16,7 +16,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const policyData = data as LoaderData;
   return [
     { title: policyData?.policy?.title || 'Policy Not Found' },
-    { description: `${policyData?.policy?.title || 'Policy'} for NovaBox Digital` },
+    { description: `${policyData?.policy?.title || 'Policy'} for Novabox LLC` },
   ];
 };
 
@@ -59,7 +59,7 @@ function getPolicyData(handle: string): PolicyData | null {
       title: 'Privacy Policy',
       lastUpdated: 'January 1, 2023',
       content: `
-        <p>At NovaBox Digital, we value your privacy and are committed to protecting your personal information.</p>
+        <p>At Novabox LLC, we value your privacy and are committed to protecting your personal information.</p>
         <h2>Information We Collect</h2>
         <p>We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, or contact us for support.</p>
         <h2>How We Use Your Information</h2>

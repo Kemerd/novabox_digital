@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { theme } from '~/styles/theme';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'About | NovaBox Digital' }];
+  return [{ title: 'About | Novabox LLC' }];
 };
 
 export default function AboutPage() {
@@ -26,7 +26,7 @@ export default function AboutPage() {
           color: theme.colors.primary,
           marginBottom: theme.spacing.md,
         }}>
-          About NovaBox Digital
+          About Novabox LLC
         </h1>
         <p style={{
           fontFamily: theme.typography.fonts.text.regular,
@@ -68,7 +68,7 @@ export default function AboutPage() {
             lineHeight: '1.6',
             marginBottom: theme.spacing.md,
           }}>
-            At NovaBox Digital, our mission is to create software that doesn't just work, but excels. We focus on clean code, intuitive design, and delivering solutions that actually solve problems.
+            At Novabox LLC, our mission is to create software that doesn't just work, but excels. We focus on clean code, intuitive design, and delivering solutions that actually solve problems.
           </p>
         </div>
 

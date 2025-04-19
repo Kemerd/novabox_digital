@@ -3,7 +3,7 @@ import type { MetaFunction } from '@remix-run/react';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'NovaBox Digital - Policies' },
+    { title: 'Novabox LLC - Policies' },
     { description: 'Review our policies including privacy, terms, shipping, and refund policies.' }
   ];
 };
@@ -13,7 +13,7 @@ export default function Policies() {
     <div className="policies">
       <h1>Our Policies</h1>
       <p>
-        At NovaBox Digital, we strive to be transparent in how we operate. 
+        At Novabox LLC, we strive to be transparent in how we operate. 
         Please review our policies below to understand how we handle various aspects of our business.
       </p>
       

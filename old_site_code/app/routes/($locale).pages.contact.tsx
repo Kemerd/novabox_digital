@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { theme } from '~/styles/theme';
 
 export const meta: MetaFunction = () => {
-    return [{ title: 'Contact Us | NovaBox Digital' }];
+    return [{ title: 'Contact Us | Novabox LLC' }];
 };
 
 /**

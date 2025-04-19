@@ -6,19 +6,17 @@ import appStyles from '~/styles/app.css?url';
 import contactStyles from '~/styles/contact.css?url';
 import { PageLayout } from '~/components/PageLayout';
 import { LandingHero } from '~/components/LandingHero';
+import { motion } from 'framer-motion';
 
 // Static site configuration for GitHub Pages
 export const siteConfig = {
   siteInfo: {
-    title: 'NovaBox Digital',
+    title: 'Novabox LLC',
     description: 'We make software that doesn\'t suck.',
   },
   navigationLinks: [
     { title: 'Home', url: '/' },
-    { title: 'Services', url: '/services' },
-    { title: 'About', url: '/about' },
     { title: 'Contact', url: '/contact' },
-    { title: 'Blog', url: '/blog' },
   ]
 };
 
@@ -26,10 +24,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/services" element={<Services />} />
-      <Route path="/blog" element={<Blog />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -43,20 +38,124 @@ function Home() {
   );
 }
 
-function About() {
-  return <div className="page-content"><h1>About Us</h1><p>Learn more about NovaBox Digital.</p></div>;
-}
-
 function Contact() {
-  return <div className="page-content"><h1>Contact Us</h1><p>Get in touch with our team.</p></div>;
-}
+  const contactEmail = 'contact@novabox.digital';
 
-function Services() {
-  return <div className="page-content"><h1>Our Services</h1><p>Discover what we can do for you.</p></div>;
-}
+  return (
+    <div className="contact-page">
+      <motion.div 
+        className="contact-header"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1>Contact Us</h1>
+        <p>Have a project in mind? Let's discuss how we can help bring your vision to life.</p>
+      </motion.div>
 
-function Blog() {
-  return <div className="page-content"><h1>Blog</h1><p>Read our latest articles.</p></div>;
+      <div className="contact-content">
+        <motion.div 
+          className="contact-form-container"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h2>Send us a message</h2>
+          <form className="contact-form" name="contact" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="contact" />
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                placeholder="Your name"
+                required 
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Your email address"
+                required 
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="subject">Subject</label>
+              <input 
+                type="text" 
+                id="subject" 
+                name="subject" 
+                placeholder="What's this about?"
+                required 
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="message">Message</label>
+              <textarea 
+                id="message" 
+                name="message" 
+                placeholder="Tell us about your project"
+                rows={6}
+                required
+              ></textarea>
+            </div>
+            
+            <button 
+              type="submit"
+              className="submit-button"
+            >
+              Send Message
+            </button>
+          </form>
+        </motion.div>
+
+        <motion.div 
+          className="contact-info-container"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <div className="contact-info">
+            <h2>Get in Touch</h2>
+            
+            <div className="contact-info-item">
+              <h3>Email</h3>
+              <a href={`mailto:${contactEmail}`} className="contact-link">
+                {contactEmail}
+              </a>
+            </div>
+            
+            <div className="contact-info-item">
+              <h3>Hours</h3>
+              <p>Monday - Friday: 9am - 6pm EST</p>
+            </div>
+            
+            <div className="contact-info-item">
+              <h3>Let's Connect</h3>
+              <div className="social-links">
+                <a href="https://twitter.com/novaboxdigital" target="_blank" rel="noopener noreferrer">
+                  Twitter
+                </a>
+                <a href="https://linkedin.com/company/novaboxdigital" target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                </a>
+                <a href="https://github.com/novaboxdigital" target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
 }
 
 function NotFound() {

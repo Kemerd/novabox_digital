@@ -98,7 +98,7 @@ export function LandingHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={animations.transitions.hero}
         >
-          Unapologetically 3D Printed
+          We Make Software
         </motion.h1>
 
         <motion.h2
@@ -107,7 +107,7 @@ export function LandingHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...animations.transitions.hero, delay: 0.2 }}
         >
-          Exceptionally Engineered
+          That Doesn't Suck
         </motion.h2>
 
         <div style={canvasContainerStyle}>

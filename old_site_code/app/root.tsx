@@ -9,7 +9,7 @@ import { PageLayout } from '~/components/PageLayout';
 // Static site configuration for GitHub Pages
 export const siteConfig = {
   siteInfo: {
-    title: 'NovaBox Digital',
+    title: 'Novabox LLC',
     description: 'We make software that doesn\'t suck.',
   },
   navigationLinks: [
@@ -35,11 +35,11 @@ function AppRoutes() {
 }
 
 function Home() {
-  return <div className="page-content"><h1>Welcome to NovaBox Digital</h1><p>We make software that doesn't suck.</p></div>;
+  return <div className="page-content"><h1>Welcome to Novabox LLC</h1><p>We make software that doesn't suck.</p></div>;
 }
 
 function About() {
-  return <div className="page-content"><h1>About Us</h1><p>Learn more about NovaBox Digital.</p></div>;
+  return <div className="page-content"><h1>About Us</h1><p>Learn more about Novabox LLC.</p></div>;
 }
 
 function Contact() {

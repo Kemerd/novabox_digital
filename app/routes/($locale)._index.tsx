@@ -8,7 +8,7 @@ import { siteConfig } from '~/root';
 const ThreeScene = lazy(() => import('~/components/ThreeScene'));
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'NovaBox Digital | Software Solutions' }];
+  return [{ title: 'Novabox LLC | Software Solutions' }];
 };
 
 export default function Homepage() {
@@ -194,7 +194,7 @@ export default function Homepage() {
               marginBottom: theme.spacing.lg,
             }}
           >
-            Why Choose NovaBox Digital
+            Why Choose Novabox LLC
           </motion.h2>
 
           <div style={{
