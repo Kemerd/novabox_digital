@@ -1,4 +1,4 @@
-# NovaBox Digital
+# Novabox Digital
 
 ## Overview
 NovaBox Digital is a modern, visually-stunning web application showcasing our software development capabilities. With a focus on premium aesthetics and cutting-edge technology, this site demonstrates our commitment to building software that combines beautiful design with powerful functionality.
