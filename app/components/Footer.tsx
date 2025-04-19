@@ -160,10 +160,7 @@ export function Footer({
 
           <nav style={footerStyles.nav}>
             <NavLink to="/" style={footerStyles.link}>Home</NavLink>
-            <NavLink to="/services" style={footerStyles.link}>Services</NavLink>
-            <NavLink to="/about" style={footerStyles.link}>About</NavLink>
             <NavLink to="/contact" style={footerStyles.link}>Contact</NavLink>
-            <NavLink to="/blog" style={footerStyles.link}>Blog</NavLink>
             
             <motion.button
               onClick={handlePolicyClick}
