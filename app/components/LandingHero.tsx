@@ -155,7 +155,8 @@ export function LandingHero() {
             duration: 0.8
           }}
         >
-          Slide in instrument-panel 3-1/8" & 2-1/2" gloveboxes crafted with cutting-edge Fiberon™ Nylon Carbon Fiber, just one of our many products.        </motion.p>
+          From neural-powered audio assistants to AI that remembers where you put your crap, we make the software you drunkenly described to your friends at 3AM saying "why hasn't anyone made this yet?"
+        </motion.p>
 
         <FeatureRows />
       </motion.div>
@@ -402,32 +403,32 @@ function FeatureRows() {
 
   const features = [
     {
-      title: '🎯 Precision Engineering',
-      description: 'Precision-engineered for uncompromising strength & durability. Our fine-tuned additive manufacturing process creates better, lighter, and stronger parts—without compromise.',
+      title: '🎯 AI That Actually Works',
+      description: 'Unlike the "AI" in your toaster that can\'t tell bread from cardboard, our algorithms actually do what they promise. We use bleeding-edge research because we actually read the papers instead of just slapping "AI" on our branding. We skipped the marketing BS and went straight for the good stuff—algorithms that make your life better, not just your LinkedIn posts longer.',
       image: '/img/showcase1.png',
       accent: theme.colors.accent1,
     },
     {
-      title: '✨ Surface Excellence',
-      description: 'Beautifully textured, high-performance surface finish that sets new standards. Each part showcases our commitment to perfection through advanced manufacturing.',
+      title: '✨ Interfaces That Don\'t Suck',
+      description: 'Our apps don\'t look like they were designed by engineers during a caffeine shortage. Sleek, minimal, and intuitive enough for even you to figure out. We don\'t assume you passed the first grade—we assume you were too busy eating glue and have better things to do than read a manual.',
       image: '/img/showcase2.png',
       accent: theme.colors.accent2,
     },
     {
-      title: '🛡️ Annealed Resilience',
-      description: 'Heat, chemical, and impact-resistant for real-world reliability. From aerospace to automotive, our carbon fiber parts handle extreme conditions with unmatched resilience.',
+      title: '🛡️ Cross-Platform Domination',
+      description: 'Why build for one platform when you can conquer them all through the power of CMake? Our apps run everywhere—iOS, Android, Web, that weird Linux distro your "tech friend" won\'t shut up about. Hell, we\'d probably run on your smart fridge if the API wasn\'t such garbage.',
       image: '/img/showcase3.png',
       accent: theme.colors.primary,
     },
     {
-      title: '🔥 UL 94 Flame Retardancy',
-      description: 'Flame-retardant and temperature-resistant, engineered for extreme environments and worst case scenarios. Don\'t settle for less.',
+      title: '🔥 Scalable Performance',
+      description: 'Our apps handle anything you throw at them without choking like your friend Dave after his first tequila shot. Database calls 10 times a frame? Never. Edge computing? Obviously. GPU acceleration? Now you\'re just flirting with us.',
       image: '/img/showcase4.png',
       accent: theme.colors.accent1,
     },
     {
-      title: '⚡ Engineered Efficiency',
-      description: 'Lightweight yet incredibly strong. Our structurally reinforced carbon fiber parts redefine what is possible in advanced manufacturing.',
+      title: '⚡ Borderline Magical Features',
+      description: 'From apps that count your reps by listening to your breathing to photo apps that know which watch you\'re wearing, we build stuff that makes people say "wait, how the hell does that work?" Spoiler: it\'s not magic, just really good code.',
       image: '/img/showcase5.png',
       accent: theme.colors.accent2,
     },
