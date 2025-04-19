@@ -5,7 +5,6 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import contactStyles from '~/styles/contact.css?url';
 import { PageLayout } from '~/components/PageLayout';
-import { LandingHero } from '~/components/LandingHero';
 
 // Static site configuration for GitHub Pages
 export const siteConfig = {
@@ -36,11 +35,7 @@ function AppRoutes() {
 }
 
 function Home() {
-  return (
-    <div className="homepage">
-      <LandingHero />
-    </div>
-  );
+  return <div className="page-content"><h1>Welcome to NovaBox Digital</h1><p>We make software that doesn't suck.</p></div>;
 }
 
 function About() {

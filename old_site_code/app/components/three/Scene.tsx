@@ -42,7 +42,7 @@ function EnvironmentLoader() {
     return (
         <Environment
             files="potsdamer_platz_1k.hdr"
-            path="/models/"
+            path="/assets/env/"
         />
     );
 }

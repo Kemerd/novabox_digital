@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 // Only use the GitHub Pages base path for production builds
 const base = process.env.NODE_ENV === 'production' ? '/novabox_digital/' : '/';
@@ -12,22 +13,23 @@ export default defineConfig({
   ],
   base,
   build: {
+    outDir: 'dist',
     // Allow a strict Content-Security-Policy
-    // withtout inlining assets as base64:
+    // without inlining assets as base64:
     assetsInlineLimit: 0,
-  },
-  ssr: {
-    optimizeDeps: {
-      /**
-       * Include dependencies here if they throw CJS<>ESM errors.
-       */
-      include: [
-        '@react-three/fiber',
-        '@react-three/drei',
-        'three',
-        'react-reconciler'
-      ],
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      },
     },
-    noExternal: ['three', '@react-three/fiber', '@react-three/drei', 'react-reconciler'],
+  },
+  resolve: {
+    alias: {
+      '~': resolve(__dirname, 'app'),
+    },
+  },
+  server: {
+    port: 5173,
+    open: true,
   },
 });
