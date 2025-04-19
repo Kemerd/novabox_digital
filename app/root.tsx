@@ -6,7 +6,6 @@ import {
   useRouteError,
   ScrollRestoration,
   isRouteErrorResponse,
-  type ShouldRevalidateFunction,
 } from '@remix-run/react';
 import favicon from '~/assets/favicon.svg';
 import resetStyles from '~/styles/reset.css?url';
@@ -15,24 +14,19 @@ import contactStyles from '~/styles/contact.css?url';
 import { PageLayout } from '~/components/PageLayout';
 import { useEffect } from 'react';
 
-export type RootLoader = typeof loader;
-
-/**
- * This is important to avoid re-fetching root queries on sub-navigations
- */
-export const shouldRevalidate: ShouldRevalidateFunction = ({
-  formMethod,
-  currentUrl,
-  nextUrl,
-}) => {
-  // revalidate when a mutation is performed e.g. form submissions
-  if (formMethod && formMethod !== 'GET') return true;
-
-  // revalidate when manually revalidating via useRevalidator
-  if (currentUrl.toString() === nextUrl.toString()) return true;
-
-  // Default behavior for other cases
-  return false;
+// Static site configuration for GitHub Pages
+export const siteConfig = {
+  siteInfo: {
+    title: 'NovaBox Digital',
+    description: 'We make software that doesn\'t suck.',
+  },
+  navigationLinks: [
+    { title: 'Home', url: '/' },
+    { title: 'Services', url: '/services' },
+    { title: 'About', url: '/about' },
+    { title: 'Contact', url: '/contact' },
+    { title: 'Blog', url: '/blog' },
+  ]
 };
 
 /**
@@ -92,23 +86,6 @@ export function links() {
       href: contactStyles,
     },
   ];
-}
-
-export async function loader() {
-  return {
-    // Add site-wide settings that will be needed across pages
-    siteInfo: {
-      title: 'NovaBox Digital',
-      description: 'We make exceptional software solutions for modern businesses',
-    },
-    navigationLinks: [
-      { title: 'Home', url: '/' },
-      { title: 'Services', url: '/services' },
-      { title: 'About', url: '/about' },
-      { title: 'Contact', url: '/contact' },
-      { title: 'Blog', url: '/blog' },
-    ]
-  };
 }
 
 export function Layout({ children }: { children?: React.ReactNode }) {
@@ -185,13 +162,17 @@ export function ErrorBoundary() {
       <body>
         <div style={{
           position: 'fixed',
-          top: 0
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: '#0A0A0A',
+          zIndex: -1
         }} />
-        <div className="route-error">
+        <div className="error-container">
           <h1>{heading}</h1>
           <p>{message}</p>
         </div>
-        <ScrollRestoration />
         <Scripts />
       </body>
     </html>

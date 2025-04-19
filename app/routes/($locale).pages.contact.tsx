@@ -1,89 +1,17 @@
-import { json, type LoaderFunctionArgs } from '@remix-run/server-runtime';
-import { useLoaderData, type MetaFunction } from '@remix-run/react';
+import { type MetaFunction } from '@remix-run/react';
 import { motion } from 'framer-motion';
 import { theme } from '~/styles/theme';
-// Keep imports for future use but comment them out
-// import { ContactForm } from '~/components/ContactForm';
-// import { sendEmail, formatContactEmail } from '~/lib/email.server';
 
 export const meta: MetaFunction = () => {
     return [{ title: 'Contact Us | NovaBox Digital' }];
 };
 
 /**
- * Server-side loader function to fetch any necessary data
- */
-export async function loader() {
-    return json({
-        contactEmail: 'contact@novabox.digital',
-    });
-}
-
-// Keep the action function for future use but comment it out
-/*
-export async function action({ request, context }: ActionFunctionArgs) {
-    const formData = await request.formData();
-
-    // Extract form data
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const message = formData.get('message') as string;
-
-    // Validate form data server-side
-    const errors: Record<string, string> = {};
-
-    if (!name || name.trim() === '') {
-        errors.name = 'Name is required';
-    }
-
-    if (!email || email.trim() === '') {
-        errors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errors.email = 'Please enter a valid email address';
-    }
-
-    if (!message || message.trim() === '') {
-        errors.message = 'Message is required';
-    }
-
-    // Return errors if validation fails
-    if (Object.keys(errors).length > 0) {
-        return json({ error: 'Please correct the errors in the form', errors }, { status: 400 });
-    }
-
-    try {
-        // Format the email data
-        const emailData = formatContactEmail(name, email, message);
-
-        // Send the email using our utility with the storefront from context
-        const { success, error } = await sendEmail(context.storefront, emailData);
-
-        if (!success) {
-            console.error('Failed to send contact form email:', error);
-            return json(
-                { error: 'Failed to send your message. Please try again later.' },
-                { status: 500 },
-            );
-        }
-
-        // Return success response
-        return json({ success: true });
-    } catch (error) {
-        console.error('Failed to send contact form email:', error);
-        return json(
-            { error: 'Failed to send your message. Please try again later.' },
-            { status: 500 },
-        );
-    }
-}
-*/
-
-/**
  * Contact page component
  * Renders contact information with a form
  */
 export default function ContactPage() {
-    const { contactEmail } = useLoaderData<typeof loader>();
+    const contactEmail = 'contact@novabox.digital';
 
     return (
         <div className="contact-page">
@@ -105,7 +33,8 @@ export default function ContactPage() {
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
                     <h2>Send us a message</h2>
-                    <form className="contact-form">
+                    <form className="contact-form" name="contact" method="POST" data-netlify="true">
+                        <input type="hidden" name="form-name" value="contact" />
                         <div className="form-group">
                             <label htmlFor="name">Name</label>
                             <input 

@@ -1,10 +1,9 @@
-import { useRouteLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
 import { Footer } from '~/components/Footer';
 import { Header } from '~/components/Header';
 import { motion } from 'framer-motion';
 import { theme } from '~/styles/theme';
-import type { RootLoader } from '~/root';
+import { siteConfig } from '~/root';
 
 interface PageLayoutProps {
   children?: React.ReactNode;
@@ -13,8 +12,6 @@ interface PageLayoutProps {
 export function PageLayout({
   children = null,
 }: PageLayoutProps) {
-  const data = useRouteLoaderData<RootLoader>('root');
-  
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -30,17 +27,15 @@ export function PageLayout({
         position: 'relative',
       }}
     >
-      {data && (
-        <Header 
-          navigationLinks={data.navigationLinks}
-          siteInfo={data.siteInfo} 
-        />
-      )}
+      <Header 
+        navigationLinks={siteConfig.navigationLinks}
+        siteInfo={siteConfig.siteInfo} 
+      />
       <main style={{ flex: 1, padding: theme.spacing.lg }}>
         {children}
       </main>
       <Footer 
-        siteInfo={data?.siteInfo}
+        siteInfo={siteConfig.siteInfo}
       />
     </motion.div>
   );

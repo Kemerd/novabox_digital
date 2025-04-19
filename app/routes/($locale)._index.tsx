@@ -1,8 +1,8 @@
-import { useRouteLoaderData, type MetaFunction } from '@remix-run/react';
+import { type MetaFunction } from '@remix-run/react';
 import { motion } from 'framer-motion';
 import { Suspense, lazy } from 'react';
 import { theme } from '~/styles/theme';
-import type { RootLoader } from '~/root';
+import { siteConfig } from '~/root';
 
 // Lazy load the 3D component to avoid SSR issues
 const ThreeScene = lazy(() => import('~/components/ThreeScene'));
@@ -12,8 +12,6 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Homepage() {
-  const data = useRouteLoaderData<RootLoader>('root');
-  
   return (
     <div className="homepage">
       {/* Hero Section */}
@@ -96,7 +94,7 @@ export default function Homepage() {
           <motion.h2
             style={{
               fontFamily: theme.typography.fonts.display.bold,
-              fontSize: theme.typography.sizes.heading.primary,
+              fontSize: theme.typography.sizes.heading.h1,
               color: theme.colors.primary,
               marginBottom: theme.spacing.lg,
             }}
@@ -156,7 +154,7 @@ export default function Homepage() {
                 </div>
                 <h3 style={{
                   fontFamily: theme.typography.fonts.display.bold,
-                  fontSize: theme.typography.sizes.heading.tertiary,
+                  fontSize: theme.typography.sizes.heading.h3,
                   color: theme.colors.accent3,
                   marginBottom: theme.spacing.sm,
                 }}>
@@ -164,7 +162,7 @@ export default function Homepage() {
                 </h3>
                 <p style={{
                   fontFamily: theme.typography.fonts.text.regular,
-                  fontSize: theme.typography.sizes.body.regular,
+                  fontSize: theme.typography.sizes.body.base,
                   color: theme.colors.accent2,
                 }}>
                   {service.description}
@@ -191,7 +189,7 @@ export default function Homepage() {
           <motion.h2
             style={{
               fontFamily: theme.typography.fonts.display.bold,
-              fontSize: theme.typography.sizes.heading.primary,
+              fontSize: theme.typography.sizes.heading.h1,
               color: theme.colors.primary,
               marginBottom: theme.spacing.lg,
             }}
@@ -210,16 +208,16 @@ export default function Homepage() {
             {[
               {
                 title: 'Innovative Approach',
-                description: 'We leverage the latest technologies and methodologies to create forward-thinking solutions.',
+                description: 'We leverage the latest technologies and methodologies to create forward-thinking solutions.'
               },
               {
                 title: 'Client Partnership',
-                description: 'We work closely with you as partners, ensuring your vision becomes reality.',
+                description: 'We work closely with you as partners, ensuring your vision becomes reality.'
               },
               {
                 title: 'Quality Focus',
-                description: 'We're obsessed with quality code, robust architecture, and exceptional performance.',
-              },
+                description: 'We\'re obsessed with quality code, robust architecture, and exceptional performance.'
+              }
             ].map((point, index) => (
               <motion.div
                 key={index}
@@ -235,7 +233,7 @@ export default function Homepage() {
               >
                 <h3 style={{
                   fontFamily: theme.typography.fonts.display.bold,
-                  fontSize: theme.typography.sizes.heading.tertiary,
+                  fontSize: theme.typography.sizes.heading.h3,
                   color: theme.colors.accent3,
                   marginBottom: theme.spacing.sm,
                 }}>
@@ -243,7 +241,7 @@ export default function Homepage() {
                 </h3>
                 <p style={{
                   fontFamily: theme.typography.fonts.text.regular,
-                  fontSize: theme.typography.sizes.body.regular,
+                  fontSize: theme.typography.sizes.body.base,
                   color: theme.colors.accent2,
                 }}>
                   {point.description}
@@ -275,7 +273,7 @@ export default function Homepage() {
           <motion.h2
             style={{
               fontFamily: theme.typography.fonts.display.bold,
-              fontSize: theme.typography.sizes.heading.secondary,
+              fontSize: theme.typography.sizes.heading.h2,
               color: theme.colors.primary,
               marginBottom: theme.spacing.md,
             }}
