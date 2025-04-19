@@ -1,84 +1,82 @@
-import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { useLoaderData, type MetaFunction } from '@remix-run/react';
+import { useLoaderData, useParams, type MetaFunction } from '@remix-run/react';
+import { json } from '@remix-run/server-runtime';
+import type { LoaderFunctionArgs } from '@remix-run/server-runtime';
+
+interface PageData {
+  title: string;
+  description: string;
+  content: string;
+}
+
+interface LoaderData {
+  page: PageData | null;
+}
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return [{ title: `Novabox | ${data?.page.title ?? ''}` }];
+  const pageData = data as LoaderData;
+  return [
+    { title: pageData?.page?.title || 'Page Not Found' },
+    { description: pageData?.page?.description || 'Page description not available' },
+  ];
 };
 
-export async function loader(args: LoaderFunctionArgs) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return { ...deferredData, ...criticalData };
-}
-
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
-async function loadCriticalData({ context, params }: LoaderFunctionArgs) {
-  if (!params.handle) {
-    throw new Error('Missing page handle');
+export async function loader({ params }: LoaderFunctionArgs) {
+  // This would typically fetch data from your CMS or API
+  // For now, we'll return mock data based on the handle
+  const pageData = getPageData(params.handle || '');
+  
+  if (!pageData) {
+    throw new Response('Page not found', { status: 404 });
   }
-
-  const [{ page }] = await Promise.all([
-    context.storefront.query(PAGE_QUERY, {
-      variables: {
-        handle: params.handle,
-      },
-    }),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
-
-  if (!page) {
-    throw new Response('Not Found', { status: 404 });
-  }
-
-  return {
-    page,
-  };
-}
-
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
-function loadDeferredData({ context }: LoaderFunctionArgs) {
-  return {};
+  
+  return json<LoaderData>({ page: pageData });
 }
 
 export default function Page() {
-  const { page } = useLoaderData<typeof loader>();
+  const { page } = useLoaderData<LoaderData>();
+  const params = useParams();
+
+  if (!page) {
+    return <div>Page not found: {params.handle}</div>;
+  }
 
   return (
     <div className="page">
       <header>
         <h1>{page.title}</h1>
       </header>
-      <main dangerouslySetInnerHTML={{ __html: page.body }} />
+      <div 
+        className="page-content"
+        dangerouslySetInnerHTML={{ __html: page.content }}
+      />
     </div>
   );
 }
 
-const PAGE_QUERY = `#graphql
-  query Page(
-    $language: LanguageCode,
-    $country: CountryCode,
-    $handle: String!
-  )
-  @inContext(language: $language, country: $country) {
-    page(handle: $handle) {
-      id
-      title
-      body
-      seo {
-        description
-        title
-      }
+// Mock function to return page data
+function getPageData(handle: string): PageData | null {
+  const pages: Record<string, PageData> = {
+    'about': {
+      title: 'About Us',
+      description: 'Learn about our company',
+      content: '<p>This is the about us page content.</p>'
+    },
+    'contact': {
+      title: 'Contact Us',
+      description: 'Get in touch with our team',
+      content: '<p>This is the contact page content.</p>'
+    },
+    'terms': {
+      title: 'Terms of Service',
+      description: 'Our terms of service',
+      content: '<p>This is the terms of service content.</p>'
+    },
+    'privacy': {
+      title: 'Privacy Policy',
+      description: 'Our privacy policy',
+      content: '<p>This is the privacy policy content.</p>'
     }
-  }
-` as const;
+  };
+  
+  return pages[handle] || null;
+}

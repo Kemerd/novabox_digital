@@ -2,11 +2,15 @@ import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import react from '@vitejs/plugin-react';
 
+// Only use the GitHub Pages base path for production builds
+const base = process.env.NODE_ENV === 'production' ? '/novabox_digital/' : '/';
+
 export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths(),
   ],
+  base,
   build: {
     // Allow a strict Content-Security-Policy
     // withtout inlining assets as base64:

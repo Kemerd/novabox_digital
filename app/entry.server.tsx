@@ -1,94 +1,29 @@
-import type { EntryContext, AppLoadContext } from '@shopify/remix-oxygen';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
 import { renderToReadableStream } from 'react-dom/server';
-import { createContentSecurityPolicy } from '@shopify/hydrogen';
+import type { EntryContext } from '@remix-run/server-runtime';
 
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
-  context: AppLoadContext,
 ) {
-  const { nonce, header, NonceProvider } = createContentSecurityPolicy({
-    shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
-      storeDomain: context.env.PUBLIC_STORE_DOMAIN,
-    },
-    styleSrc: [
-      "'self'",
-      "'unsafe-inline'",
-      "https://cdn.shopify.com",
-      "http://localhost:*",
-      "https://fonts.googleapis.com",
-      "https://fonts.gstatic.com",
-      "https://*.myshopify.com",
-      "https://*.myshopify.dev",
-    ],
-    connectSrc: [
-      "'self'",
-      "https://monorail-edge.shopifysvc.com",
-      "https://monorail-edge.shopifysvc.com",
-      "https://events.shopifyanalytics.com",
-      "https://o.b.a.shopify.com",
-      "https://checkout.shopify.com",
-      "https://shop.app",
-      `https://${context.env.PUBLIC_CHECKOUT_DOMAIN}`,
-      `https://${context.env.PUBLIC_STORE_DOMAIN}`,
-      "https://*.myshopify.com",
-      "https://*.myshopify.dev",
-      "http://localhost:*",
-      "ws://localhost:*",
-      "ws://127.0.0.1:*",
-      "ws://*.tryhydrogen.dev:*",
-      "https://raw.githack.com",
-      "https://www.facebook.com",
-    ],
-    imgSrc: [
-      "'self'",
-      "data:",
-      "https://cdn.shopify.com",
-      `https://${context.env.PUBLIC_STORE_DOMAIN}`,
-      "https://*.shopify.com",
-      "https://*.shopifycdn.com",
-      "https://www.facebook.com",
-    ],
-    scriptSrc: [
-      "'self'",
-      // Note: nonce will be added automatically by NonceProvider
-      "https://cdn.shopify.com",
-      "https://shopify.com",
-      "http://localhost:*",
-      "https://*.myshopify.com",
-      "https://*.myshopify.dev",
-      "https://shop.app",
-      `https://${context.env.PUBLIC_CHECKOUT_DOMAIN}`,
-      "'strict-dynamic'",
-      "https://connect.facebook.net",
-    ],
-    defaultSrc: [
-      "'self'",
-      "https://cdn.shopify.com",
-      "https://shopify.com",
-      "http://localhost:*",
-      "'unsafe-eval'", // Required for WebAssembly
-    ],
-    // Allow frames for Web Pixels and checkout
-    frameSrc: [
-      "'self'",
-      "https://shop.app",
-      "https://checkout.shopify.com",
-      `https://${context.env.PUBLIC_CHECKOUT_DOMAIN}`,
-    ],
-  });
+  // Define basic security headers
+  const cspHeader = `
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    img-src 'self' data: https://raw.githack.com;
+    font-src 'self' https://fonts.gstatic.com;
+    connect-src 'self' ws://localhost:* ws://127.0.0.1:*;
+    frame-src 'self';
+    object-src 'none';
+  `.trim().replace(/\s+/g, ' ');
 
   const body = await renderToReadableStream(
-    <NonceProvider>
-      <RemixServer context={remixContext} url={request.url} nonce={nonce} />
-    </NonceProvider>,
+    <RemixServer context={remixContext} url={request.url} />,
     {
-      nonce,
       signal: request.signal,
       onError(error) {
         console.error(error);
@@ -97,12 +32,13 @@ export default async function handleRequest(
     },
   );
 
+  // For bots, wait for the stream to be fully ready for SEO purposes
   if (isbot(request.headers.get('user-agent'))) {
     await body.allReady;
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set('Content-Security-Policy', cspHeader);
 
   return new Response(body, {
     headers: responseHeaders,

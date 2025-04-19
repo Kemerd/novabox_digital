@@ -1,72 +1,96 @@
-import type {HydrogenSession} from '@shopify/hydrogen';
-import {
-  createCookieSessionStorage,
-  type SessionStorage,
-  type Session,
-} from '@shopify/remix-oxygen';
+import { createCookieSessionStorage } from '@remix-run/server-runtime';
 
 /**
- * This is a custom session implementation for your Hydrogen shop.
- * Feel free to customize it to your needs, add helper methods, or
- * swap out the cookie-based implementation with something else!
+ * A simple session implementation for Remix
  */
-export class AppSession implements HydrogenSession {
+export class AppSession {
+  private sessionStorage: ReturnType<typeof createCookieSessionStorage>;
+  private session: any;
   public isPending = false;
 
-  #sessionStorage;
-  #session;
-
-  constructor(sessionStorage: SessionStorage, session: Session) {
-    this.#sessionStorage = sessionStorage;
-    this.#session = session;
+  /**
+   * Constructor for AppSession
+   * 
+   * @param sessionStorage - The session storage mechanism
+   * @param session - The current session
+   */
+  constructor(sessionStorage: ReturnType<typeof createCookieSessionStorage>, session: any) {
+    this.sessionStorage = sessionStorage;
+    this.session = session;
   }
 
+  /**
+   * Initialize a session from a request
+   * 
+   * @param request - The incoming request
+   * @param secrets - The secret keys for the session
+   * @returns A new AppSession instance
+   */
   static async init(request: Request, secrets: string[]) {
-    const storage = createCookieSessionStorage({
+    const sessionStorage = createCookieSessionStorage({
       cookie: {
-        name: 'session',
+        name: 'app_session',
         httpOnly: true,
         path: '/',
         sameSite: 'lax',
         secrets,
+        secure: process.env.NODE_ENV === 'production',
       },
     });
 
-    const session = await storage
-      .getSession(request.headers.get('Cookie'))
-      .catch(() => storage.getSession());
+    const session = await sessionStorage.getSession(
+      request.headers.get('Cookie'),
+    );
 
-    return new this(storage, session);
+    return new AppSession(sessionStorage, session);
   }
 
+  /**
+   * Check if the session has a key
+   */
   get has() {
-    return this.#session.has;
+    return (key: string) => this.session.has(key);
   }
 
+  /**
+   * Get a value from the session
+   */
   get get() {
-    return this.#session.get;
+    return <T = any>(key: string): T => this.session.get(key);
   }
 
+  /**
+   * Get and remove a value from the session (flash)
+   */
   get flash() {
-    return this.#session.flash;
+    return <T = any>(key: string): T => this.session.flash(key);
   }
 
+  /**
+   * Remove a value from the session
+   */
   get unset() {
-    this.isPending = true;
-    return this.#session.unset;
+    return (key: string) => this.session.unset(key);
   }
 
+  /**
+   * Set a value in the session
+   */
   get set() {
-    this.isPending = true;
-    return this.#session.set;
+    return <T = any>(key: string, value: T) => this.session.set(key, value);
   }
 
+  /**
+   * Destroy the session
+   */
   destroy() {
-    return this.#sessionStorage.destroySession(this.#session);
+    return this.sessionStorage.destroySession(this.session);
   }
 
+  /**
+   * Commit the session to a cookie header
+   */
   commit() {
-    this.isPending = false;
-    return this.#sessionStorage.commitSession(this.#session);
+    return this.sessionStorage.commitSession(this.session);
   }
 }

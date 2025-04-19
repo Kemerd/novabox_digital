@@ -1,16 +1,12 @@
-import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {getSitemapIndex} from '@shopify/hydrogen';
+import { redirect } from '@remix-run/server-runtime';
 
-export async function loader({
-  request,
-  context: {storefront},
-}: LoaderFunctionArgs) {
-  const response = await getSitemapIndex({
-    storefront,
-    request,
+/**
+ * A simple redirect to the static sitemap file
+ */
+export async function loader() {
+  return redirect('/sitemap.xml', {
+    headers: {
+      'Cache-Control': `max-age=${60 * 60 * 24}`,
+    },
   });
-
-  response.headers.set('Cache-Control', `max-age=${60 * 60 * 24}`);
-
-  return response;
 }

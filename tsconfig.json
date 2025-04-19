@@ -15,7 +15,6 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "types": [
-      "@shopify/oxygen-workers-types",
       "@remix-run/node",
       "vite/client"
     ],

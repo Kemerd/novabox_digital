@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Disallow specific paths
+Disallow: /admin
+Disallow: /cart
+Disallow: /orders
+Disallow: /checkouts/
+Disallow: /checkout
+Disallow: /carts
+Disallow: /account
+Disallow: /search/?*
+
+Sitemap: https://novabox.digital/sitemap.xml 

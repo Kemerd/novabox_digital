@@ -1,35 +1,29 @@
-/// <reference types="vite/client" />
-/// <reference types="@shopify/remix-oxygen" />
-/// <reference types="@shopify/oxygen-workers-types" />
+/// <reference types="@remix-run/dev" />
+/// <reference types="@remix-run/node" />
 
-// Enhance TypeScript's built-in typings.
-import '@total-typescript/ts-reset';
-
-import type {
-  HydrogenContext,
-  HydrogenSessionData,
-  HydrogenEnv,
-} from '@shopify/hydrogen';
-import type {createAppLoadContext} from '~/lib/context';
-
-declare global {
-  /**
-   * A global `process` object is only available during build to access NODE_ENV.
-   */
-  const process: {env: {NODE_ENV: 'production' | 'development'}};
-
-  interface Env extends HydrogenEnv {
-    // declare additional Env parameter use in the fetch handler and Remix loader context here
-  }
+/**
+ * Environment variables for the application
+ */
+interface Env {
+  NODE_ENV: 'development' | 'production' | 'test';
+  SESSION_SECRET: string;
+  // Add other environment variables as needed
 }
 
-declare module '@shopify/remix-oxygen' {
-  interface AppLoadContext
-    extends Awaited<ReturnType<typeof createAppLoadContext>> {
-    // to change context type, change the return of createAppLoadContext() instead
-  }
+/**
+ * Loader context for Remix
+ */
+interface AppLoadContext {
+  env: Env;
+  session: any;
+}
 
-  interface SessionData extends HydrogenSessionData {
-    // declare local additions to the Remix session data here
-  }
+/**
+ * Session data stored in cookies
+ */
+interface SessionData {
+  userId?: string;
+  language?: string;
+  country?: string;
+  // Add other session data as needed
 }

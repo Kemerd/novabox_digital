@@ -1,110 +1,109 @@
 // Virtual entry point for the app
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line import/no-unresolved
-import * as remixBuild from 'virtual:remix/server-build';
-import { storefrontRedirect } from '@shopify/hydrogen';
-import { createRequestHandler } from '@shopify/remix-oxygen';
-import { createAppLoadContext } from '~/lib/context';
-import { createServer } from 'vite';
+import { createServer } from 'node:http';
+import { readFileSync } from 'node:fs';
 import express from 'express';
+import { createServer as createViteServer } from 'vite';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import type { Request, Response } from 'express';
 
 /**
- * Handle proxied HDR requests
+ * Handles requests for HDR files by fetching them from GitHub
+ * and forwarding them with the correct headers.
  */
-async function handleHDRProxy(request: Request) {
-  const url = new URL(request.url);
-  if (url.pathname.startsWith('/assets/env/')) {
-    // Map our proxy path to the githubusercontent URL
-    const hdrFile = url.pathname.split('/assets/env/')[1];
-    const githubUrl = `https://raw.githubusercontent.com/pmndrs/drei-assets/456060a26bbeb8fdf79326f224b6d99b8bcce736/hdri/${hdrFile}`;
+async function handleHDRProxy(req: Request, res: Response) {
+  const hdrPath = req.path.replace('/hdr/', '');
+  const githubURL = `https://github.com/google/material-design-icons/raw/master/src/av/hdr_off/materialiconsoutlined/24px.svg/${hdrPath}`;
 
-    try {
-      const response = await fetch(githubUrl);
-      if (!response.ok) throw new Error(`Failed to fetch HDR: ${response.status}`);
-
-      // Forward the HDR file with appropriate headers
-      return new Response(response.body, {
-        headers: {
-          'Content-Type': 'application/octet-stream',
-          'Cache-Control': 'public, max-age=31536000',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-    } catch (error) {
-      console.error('HDR proxy error:', error);
-      return new Response('Failed to load environment map', { status: 500 });
+  try {
+    const response = await fetch(githubURL);
+    
+    if (!response.ok) {
+      console.error(`Failed to fetch HDR from GitHub: ${response.status} ${response.statusText}`);
+      res.status(404).send('Not found');
+      return;
     }
+
+    // Forward headers
+    response.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+
+    // Set additional headers if needed
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Forward the body
+    if (response.body) {
+      response.body.pipe(res);
+    } else {
+      // Handle case where response.body is null
+      const text = await response.text();
+      res.send(text);
+    }
+  } catch (error) {
+    console.error('Error proxying HDR request:', error);
+    res.status(500).send('Server Error');
   }
-  return null;
 }
 
+/**
+ * Starts the server, setting up:
+ * - Express to handle API routes
+ * - Vite to serve the application in development
+ * - Static file serving
+ */
 async function startServer() {
   const app = express();
-  
-  // Handle HDR file requests for 3D environment maps
-  app.get('/assets/env/:file', async (req, res) => {
-    const hdrFile = req.params.file;
-    const githubUrl = `https://raw.githubusercontent.com/pmndrs/drei-assets/456060a26bbeb8fdf79326f224b6d99b8bcce736/hdri/${hdrFile}`;
+  const port = process.env.PORT || 3000;
 
-    try {
-      const response = await fetch(githubUrl);
-      if (!response.ok) throw new Error(`Failed to fetch HDR: ${response.status}`);
+  // Handle HDR file requests
+  app.use('/hdr/', handleHDRProxy);
 
-      // Forward the HDR file with appropriate headers
-      res.setHeader('Content-Type', 'application/octet-stream');
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      
-      response.body.pipe(res);
-    } catch (error) {
-      console.error('HDR proxy error:', error);
-      res.status(500).send('Failed to load environment map');
-    }
-  });
-
-  // Create Vite server in middleware mode and configure the app type as
-  // 'custom', disabling Vite's own HTML serving logic
-  const vite = await createServer({
+  // Create a Vite server in middleware mode
+  const vite = await createViteServer({
     server: { middlewareMode: true },
-    appType: 'custom'
+    appType: 'custom',
   });
 
-  // Use vite's connect instance as middleware
+  // Use Vite's connect instance as middleware
   app.use(vite.middlewares);
 
-  // Serve static files from the public directory
-  app.use(express.static(path.resolve(__dirname, 'public')));
+  // Serve static files
+  app.use(express.static('public'));
 
-  // All other requests are rendered as SPA
-  app.use('*', async (req, res) => {
-    try {
-      // If index.html exists in public, serve that
-      const indexPath = path.resolve(__dirname, 'public/index.html');
-      if (fs.existsSync(indexPath)) {
-        let html = fs.readFileSync(indexPath, 'utf-8');
-        html = await vite.transformIndexHtml(req.originalUrl, html);
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
-      } else {
-        // Otherwise, 404
-        res.status(404).send('Not found');
-      }
-    } catch (e) {
-      vite.ssrFixStacktrace(e as Error);
-      console.error(e);
-      res.status(500).end('Internal Server Error');
+  // Serve all other requests as a SPA
+  app.use('*', (req: Request, res: Response) => {
+    // Read the index.html file
+    const indexPath = path.resolve('dist', 'index.html');
+    
+    if (fs.existsSync(indexPath)) {
+      // Serve the built index.html in production
+      const html = readFileSync(indexPath, 'utf-8');
+      res.send(html);
+    } else {
+      // In development, serve a simple HTML that loads the entry
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>NovaBox Digital</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <script type="module" src="/src/entry.client.tsx"></script>
+          </head>
+          <body>
+            <div id="root"></div>
+          </body>
+        </html>
+      `);
     }
   });
 
-  const port = process.env.PORT || 3000;
   app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}`);
   });
 }
 
-startServer();
+startServer().catch((error) => {
+  console.error('Failed to start server:', error);
+});
