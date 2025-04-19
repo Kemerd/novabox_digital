@@ -1,7 +1,9 @@
-# NovaBox Digital
+![NovaBox Digital Logo](./public/logo.png)
+
+# Novabox LLC
 
 ## Overview
-NovaBox Digital is a modern, visually-stunning web application showcasing our software development capabilities. With a focus on premium aesthetics and cutting-edge technology, this site demonstrates our commitment to building software that combines beautiful design with powerful functionality.
+Novabox Digital is a modern, visually-stunning web application showcasing our software development capabilities. With a focus on premium aesthetics and cutting-edge technology, this site demonstrates our commitment to building software that combines beautiful design with powerful functionality.
 
 ## Tech Stack
 
