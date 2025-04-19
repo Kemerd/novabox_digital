@@ -422,7 +422,7 @@ function FeatureRows() {
     },
     {
       title: '🔥 Scalable Performance',
-      description: 'Our apps handle anything you throw at them without choking like your friend Dave after his first tequila shot. Database calls 10 times a frame? Never. Edge computing? Obviously. GPU acceleration? Now you\'re just flirting with us.',
+      description: 'Our apps handle anything you throw at them without choking. Because we did what is unthinkable to any "project manager," we actually did something called "planning ahead," and "taking our time to do it right" instead of pushing crap out of the door for the sake of calling it done. Database calls 10 times a frame? Never. Edge computing? Obviously. GPU acceleration? Now you\'re just flirting with us.',
       image: '/img/showcase4.png',
       accent: theme.colors.accent1,
     },

@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 
 const MODEL_PATHS = [
-    '/models/1by1.glb',
-    '/models/2by1.glb',
-    '/models/3by2.glb'
+    '/models/torus.glb',
+    '/models/tesseract.glb',
+    '/models/weirdshape.glb'
 ];
 
 export function usePreload() {

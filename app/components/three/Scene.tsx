@@ -76,25 +76,25 @@ export default function Scene() {
                     <Suspense fallback={null}>
                         <EnvironmentLoader />
                         <Model
-                            path="/models/1by1.glb"
+                            path="/models/torus.glb"
                             position={[-EXPLOSION_DISTANCE + X_OFFSET, BASE_Y_OFFSET, -Z_OFFSET]}
                             rotation={[0, Math.PI / 4, 0]}
                             initialRotation={[0, 0, 0]}
-                            scale={[2, 2, 2]}
+                            scale={[150, 150, 150]}
                         />
                         <Model
-                            path="/models/2by1.glb"
+                            path="/models/tesseract.glb"
                             position={[0 + X_OFFSET, BASE_Y_OFFSET + Y_SPACING, 0]}
                             rotation={[0, 0, 0]}
                             initialRotation={[0, 0, 0]}
                             scale={[2, 2, 2]}
                         />
                         <Model
-                            path="/models/3by2.glb"
+                            path="/models/weirdshape.glb"
                             position={[EXPLOSION_DISTANCE + X_OFFSET, BASE_Y_OFFSET + (Y_SPACING * 2), Z_OFFSET]}
                             rotation={[0, -Math.PI / 4, 0]}
                             initialRotation={[0, 0, 0]}
-                            scale={[2, 2, 2]}
+                            scale={[150, 150, 150]}
                         />
                     </Suspense>
                 </EnvironmentContext.Provider>
