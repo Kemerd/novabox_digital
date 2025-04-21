@@ -25,6 +25,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/stripe-redirect" element={<StripeRedirect />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -77,6 +78,43 @@ function Contact() {
 
 function NotFound() {
   return <div className="page-content"><h1>404 - Not Found</h1><p>The page you're looking for doesn't exist.</p></div>;
+}
+
+function StripeRedirect() {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        background: '#000',
+        color: '#fff',
+        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        padding: '20px',
+        textAlign: 'center',
+      }}
+    >
+      <img 
+        src="/logo.png" 
+        alt="Novabox Logo" 
+        style={{
+          maxWidth: '200px',
+          marginBottom: '30px',
+        }}
+      />
+      <h1
+        style={{
+          fontSize: '24px',
+          fontWeight: '500',
+          margin: '0 0 10px'
+        }}
+      >
+        Redirecting...
+      </h1>
+    </div>
+  );
 }
 
 function App() {
