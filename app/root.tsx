@@ -25,7 +25,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/stripe-redirect" element={<StripeRedirect />} />
+      <Route path="/stripe-success" element={<StripeSuccess />} />
+      <Route path="/stripe-upgrade" element={<StripeUpgrade />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -113,6 +114,80 @@ function StripeRedirect() {
       >
         Redirecting...
       </h1>
+    </div>
+  );
+}
+
+function StripeSuccess() {
+  return (
+    <div className="stripe-success-page">
+      <motion.div 
+          className="success-header"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+      >
+          <h1>Purchase Successful!</h1>
+          <p>Congratulations, you've successfully purchased your plan.</p>
+      </motion.div>
+
+      <div className="success-content">
+          <motion.div 
+              className="success-details"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+          >
+              <h2>What's Next?</h2>
+              <p>Your account has been updated with your new plan. You now have access to all the features included in your subscription.</p>
+              
+              <div className="action-buttons">
+                  <a href="/" className="primary-button">
+                      Return to Dashboard
+                  </a>
+                  <a href="/contact" className="secondary-button">
+                      Need Help?
+                  </a>
+              </div>
+          </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function StripeUpgrade() {
+  return (
+    <div className="stripe-upgrade-page">
+      <motion.div 
+          className="upgrade-header"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+      >
+          <h1>Upgrade Successful!</h1>
+          <p>Congratulations, you've successfully upgraded your plan.</p>
+      </motion.div>
+
+      <div className="upgrade-content">
+          <motion.div 
+              className="upgrade-details"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+          >
+              <h2>What's Next?</h2>
+              <p>Your account has been updated with your new plan. You now have access to all the enhanced features included in your upgraded subscription.</p>
+              
+              <div className="action-buttons">
+                  <a href="/" className="primary-button">
+                      Return to Dashboard
+                  </a>
+                  <a href="/contact" className="secondary-button">
+                      Need Help?
+                  </a>
+              </div>
+          </motion.div>
+      </div>
     </div>
   );
 }
