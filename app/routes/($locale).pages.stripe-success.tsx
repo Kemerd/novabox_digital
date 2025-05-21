@@ -153,7 +153,7 @@ export default function StripeSuccessPage() {
                             textAlign: 'center'
                         }}
                     >
-                        Return to Dashboard
+                        Website Home
                     </motion.a>
                     <motion.a 
                         href="/contact" 

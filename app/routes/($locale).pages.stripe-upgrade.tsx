@@ -156,7 +156,7 @@ export default function StripeUpgradePage() {
                             textAlign: 'center'
                         }}
                     >
-                        Return to Dashboard
+                        Website Home
                     </motion.a>
                     <motion.a 
                         href="/contact" 
