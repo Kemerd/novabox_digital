@@ -11,21 +11,33 @@
     <!-- GitHub Pages SPA Redirect Script -->
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
-      // MIT License
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...),
-      // which won't cause the browser to attempt to load the new url.
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
+      // This script checks for the redirect parameter and properly handles it
+      (function() {
+        // Parse the URL parameters
+        const searchParams = new URLSearchParams(window.location.search);
+        const pathParam = searchParams.get('p');
+        
+        // If we have a path parameter, use it to replace the current URL
+        if (pathParam) {
+          // Remove the leading slash if it exists to prevent double slashes
+          const cleanPath = pathParam.startsWith('/') ? pathParam : '/' + pathParam;
+          
+          // Replace the current URL without causing a page reload
+          const newUrl = window.location.origin + cleanPath;
+          window.history.replaceState(null, null, newUrl);
+          
+          // Add event listener to handle the first route once the app is loaded
+          window.addEventListener('DOMContentLoaded', function() {
+            // Create and dispatch a custom popstate event to trigger React Router
+            const popStateEvent = new PopStateEvent('popstate', { 
+              bubbles: false,
+              cancelable: false,
+              state: null
+            });
+            window.dispatchEvent(popStateEvent);
+          });
         }
-      }(window.location))
+      })();
     </script>
     <script type="module" crossorigin src="/assets/main-C7xXK2Qp.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/main-Cfq20iyq.css">

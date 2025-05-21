@@ -5,17 +5,27 @@
   <title>Redirecting...</title>
   <script>
     // Single Page Apps for GitHub Pages
-    // MIT License
-    // This script takes the current URL and converts the path and query
-    // string into a single hash-based URL that GitHub Pages can handle
-    const l = window.location;
-    const pathSegmentsToKeep = 0; // Change this if your site is in a subdirectory
-    const redirectPath = l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' + 
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash;
-    
-    window.location.replace(redirectPath);
+    // Redirects to the root with the current path as a query parameter
+    (function() {
+      const path = window.location.pathname;
+      const queryParams = window.location.search;
+      const hashFragment = window.location.hash;
+      
+      // Create the redirect URL - Keep the redirect path simple with just 'p' parameter
+      let redirectUrl = window.location.origin + '/?p=' + path;
+      
+      // Add any existing query parameters and hash fragment
+      if (queryParams && queryParams.length > 1) {
+        redirectUrl += '&' + queryParams.substring(1);
+      }
+      
+      if (hashFragment) {
+        redirectUrl += hashFragment;
+      }
+      
+      // Perform the redirect
+      window.location.replace(redirectUrl);
+    })();
   </script>
 </head>
 <body>
