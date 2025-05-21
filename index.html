@@ -7,6 +7,26 @@
     <meta name="description" content="We make software that doesn't suck." />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="theme-color" content="#0A0A0A" />
+    
+    <!-- GitHub Pages SPA Redirect Script -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // This script checks to see if a redirect is present in the query string,
+      // converts it back into the correct url and adds it to the
+      // browser's history using window.history.replaceState(...),
+      // which won't cause the browser to attempt to load the new url.
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
     <script type="module" crossorigin src="/assets/main-C7xXK2Qp.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/main-Cfq20iyq.css">
   </head>
