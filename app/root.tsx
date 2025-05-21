@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 // Import the Stripe pages from route files
 import StripeSuccessPage from '~/routes/($locale).pages.stripe-success';
 import StripeUpgradePage from '~/routes/($locale).pages.stripe-upgrade';
+import StripeCancelPage from '~/routes/($locale).pages.stripe-cancel';
 
 // Static site configuration for GitHub Pages
 export const siteConfig = {
@@ -31,6 +32,7 @@ function AppRoutes() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/stripe-success" element={<StripeSuccessPage />} />
       <Route path="/stripe-upgrade" element={<StripeUpgradePage />} />
+      <Route path="/stripe-cancel" element={<StripeCancelPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
