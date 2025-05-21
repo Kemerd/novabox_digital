@@ -13,34 +13,44 @@
     
     <!-- GitHub Pages SPA Redirect Script -->
     <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // This script checks for the redirect parameter and properly handles it
+      // Store the redirect path in sessionStorage for use after app loads
       (function() {
-        // Parse the URL parameters
         const searchParams = new URLSearchParams(window.location.search);
         const pathParam = searchParams.get('p');
         
-        // If we have a path parameter, use it to replace the current URL
         if (pathParam) {
-          // Remove the leading slash if it exists to prevent double slashes
+          // Store the path for after the app loads
           const cleanPath = pathParam.startsWith('/') ? pathParam : '/' + pathParam;
+          sessionStorage.setItem('redirectPath', cleanPath);
           
-          // Replace the current URL without causing a page reload
+          // Replace URL immediately (may not trigger routing yet)
           const newUrl = window.location.origin + cleanPath;
           window.history.replaceState(null, null, newUrl);
-          
-          // Add event listener to handle the first route once the app is loaded
-          window.addEventListener('DOMContentLoaded', function() {
-            // Create and dispatch a custom popstate event to trigger React Router
-            const popStateEvent = new PopStateEvent('popstate', { 
-              bubbles: false,
-              cancelable: false,
-              state: null
-            });
-            window.dispatchEvent(popStateEvent);
-          });
         }
       })();
+    </script>
+    
+    <!-- Second script to handle redirect after app loads -->
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        // Wait for React to finish initialization
+        setTimeout(function() {
+          const redirectPath = sessionStorage.getItem('redirectPath');
+          if (redirectPath) {
+            // Clear the stored path
+            sessionStorage.removeItem('redirectPath');
+            
+            // Create and dispatch navigation events to trigger React Router
+            // First dispatch a popstate event
+            window.dispatchEvent(new PopStateEvent('popstate'));
+            
+            // Then manually navigate using React Router's expected approach
+            const navEvent = new Event('navigate');
+            navEvent.location = { pathname: redirectPath };
+            window.dispatchEvent(navEvent);
+          }
+        }, 300); // Small delay to ensure React is initialized
+      });
     </script>
   </head>
   <body>
